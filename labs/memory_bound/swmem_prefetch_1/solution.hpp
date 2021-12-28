@@ -1,6 +1,16 @@
 #include <vector>
 #include <limits>
 
+#ifdef _MSC_VER
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+#include <Windows.h>
+
+#define builtin_prefetch(address) PreFetchCacheLine(PF_TEMPORAL_LEVEL_1, address)
+#else
+#define builtin_prefetch(address) __builtin_prefetch(address)
+#endif
+
 static constexpr size_t HASH_MAP_SIZE = 32 * 1024 * 1024 - 5;
 static constexpr size_t NUMBER_OF_LOOKUPS = 1024 * 1024;
 
@@ -27,7 +37,7 @@ public:
 
     void prefetchForVal(int val) const {
         int bucket = val % N_Buckets;
-        __builtin_prefetch(&m_vector[bucket]);
+        builtin_prefetch(&m_vector[bucket]);
     }
 };
 
