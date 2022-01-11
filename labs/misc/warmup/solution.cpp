@@ -2,5 +2,5 @@
 #include "solution.h"
 
 int solution(int* arr, int N) {
-    return (N * (N + 1)) / 2; // sum of an arithmetic series
+    return (N * (N + 1)) / 2;
 }
